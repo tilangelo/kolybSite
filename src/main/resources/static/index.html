@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Центр защиты семьи «Колыбелька»</title>
+    <style>
+        :root {
+            --primary-color: #2f947d;
+            --secondary-color: #f4f7f6;
+            --accent-color: #e0f3ef;
+            --text-color: #333;
+            --header-bg: #ffffff;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            background: var(--header-bg);
+            padding: 10px 0;
+            margin: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            padding: 5px 10px;
+            font-weight: 500;
+        }
+
+        .button {
+            background: var(--primary-color);
+            color: white !important;
+            padding: 7px 14px;
+            border-radius: 20px;
+            text-decoration: none;
+        }
+
+        .button-outline {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color) !important;
+            padding: 5px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+        }
+
+        .hero {
+            background: url('https://images.unsplash.com/photo-1600267165517-c3a29e6a78e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1650&q=80') no-repeat center center/cover;
+            padding: 80px 20px;
+            color: white;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            margin-bottom: 25px;
+            font-size: 1.1em;
+        }
+
+        .buttons a {
+            margin-right: 10px;
+        }
+
+        section {
+            padding: 40px 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .donation-cards, .news-grid, .projects-list {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .card, article {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            flex: 1;
+            min-width: 280px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        input, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--accent-color);
+            margin-top: 40px;
+        }
+
+        a {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="../infoAboutUs">О нас</a></li>
+            <li><a href="../projects">Наши проекты</a></li>
+            <li><a href="../news">Новости</a></li>
+            <li><a href="../contacts">Контакты</a></li>
+            <li><a class="button-outline" href="../help-request">Получить помощь</a></li>
+            <li><a class="button" href="../donate">Поддержать</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <h1>Добро пожаловать в Центр защиты семьи «Колыбелька»</h1>
+        <p>Мы заботимся о женщинах и детях в трудных ситуациях. Узнайте, как мы можем помочь вам и вашим близким.</p>
+        <div class="buttons">
+            <a href="#help-request" class="button">Получить помощь</a>
+            <a href="#donate" class="button-outline">Помочь</a>
+        </div>
+    </section>
+
+    <section id="donations">
+        <h2>Актуальные сборы для помощи семьям и детям</h2>
+        <p>Мы собираем средства для поддержки женщин и детей в трудных ситуациях. Присоединяйтесь к нашим усилиям и помогите изменить жизни к лучшему.</p>
+        <div class="donation-cards">
+            <div class="card">
+                <h3>Пример сбора</h3>
+                <p>Ваш вклад может изменить жизни многих.</p>
+            </div>
+            <div class="card">
+                <h3>Пример сбора</h3>
+                <p>Участвуйте в наших акциях и помогайте нуждающимся.</p>
+            </div>
+            <div class="card">
+                <h3>Пример сбора</h3>
+                <p>Будьте в курсе последних новостей и событий.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="news">
+        <h2>Последние новости центра</h2>
+        <p>Узнайте о наших последних событиях и инициативах.</p>
+        <div class="news-grid">
+            <article>
+                <h4>Новый проект по поддержке матерей</h4>
+                <p>Мы запустили новый проект для поддержки матерей в трудной ситуации.</p>
+            </article>
+            <article>
+                <h4>Успехи наших волонтёров в работе</h4>
+                <p>Наши волонтёры сделали много для поддержки семей в этом месяце.</p>
+            </article>
+            <article>
+                <h4>Приглашаем на благотворительный концерт</h4>
+                <p>Приходите в эту субботу, чтобы поддержать центр.</p>
+            </article>
+            <article>
+                <h4>Новая программа помощи детям</h4>
+                <p>Мы запускаем программу помощи детям из неблагополучных семей в нашем селе.</p>
+            </article>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2>Проекты центра</h2>
+        <p>Мы организуем масштабные проекты для улучшения качества жизни в нашем селе.</p>
+        <div class="projects-list">
+            <div class="card">
+                <h3>Мастерская «Выбери верный путь»</h3>
+                <p>Ваш вклад может изменить жизни многих.</p>
+            </div>
+            <div class="card">
+                <h3>Мастерская «Юный электрик»</h3>
+                <p>Участвуйте в наших акциях и помогайте нуждающимся.</p>
+            </div>
+            <div class="card">
+                <h3>Проект «Школа осознанного материнства “Я-Мама”»</h3>
+                <p>Будьте в курсе последних новостей и событий.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="help-request">
+        <h2>Оставить заявку на помощь</h2>
+        <p>Мы готовы помочь вам в трудную минуту.</p>
+        <form id="helpRequestForm">
+            <label>Имя</label>
+            <input type="text" id="name" name="name" required>
+            <label>Электронная почта</label>
+            <input type="email" id="email" name="email" required>
+            <label>Сообщение</label>
+            <textarea id="message" name="message" required></textarea>
+            <label><input type="checkbox" required> Я принимаю условия</label>
+            <button type="submit">Отправить</button>
+        </form>
+    </section>
+
+    <script>
+        document.getElementById('helpRequestForm').addEventListener('submit', function(event){
+            event.preventDefault();
+
+            const formData ={
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                message: document.getElementById('message').value
+            };
+
+            fetch('api/v1/helpRequest', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            }).then(response => response.json())
+                .then(data => {
+                    if (data.paymentUrl) {
+                        window.location.href = data.paymentUrl; // 👉 редирект на оплату
+                    } else {
+                        alert('Заявка отправлена, но ссылка на оплату не получена.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Произошла ошибка при отправке формы.');
+                });
+        });
+    </script>
+
+    <section id="contacts">
+        <h2>Контакты для помощи центру</h2>
+        <p><strong>Email:</strong> <a href="mailto:info@kolybelka.ru">info@kolybelka.ru</a></p>
+        <p><strong>Телефон:</strong> <a href="tel:+79804566874">+7 (980) 456-68-74</a></p>
+        <p><strong>Адрес:</strong> село Покровка, Приморье, ул. Солнечная, 10</p>
+    </section>
+
+    <footer>
+        <p>© 2025 КОЛЫБЕЛЬКА</p>
+        <a href="#">Политика конфиденциальности</a> | <a href="#">Условия обслуживания</a>
+        <p>Следите за нами: <a href="#">ВКонтакте</a></p>
+    </footer>
+</body>
+</html>

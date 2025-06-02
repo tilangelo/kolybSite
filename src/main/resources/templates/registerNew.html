@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section class="container">
+
+    <div class="login">
+        <h1>Создайте нового admin</h1>
+        <form id="userForm">
+            <p><input type="text" id="name" name="name" placeholder="имя админа"></p>
+            <p><input type="text" id="password" name="password" placeholder="пароль"></p>
+            <p class="submit"><input type="submit" name="commit" value="Login"></p>
+        </form>
+    </div>
+
+</section>
+
+<script>
+    document.getElementById('userForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Собираем данные формы
+        const formData = {
+            name: document.getElementById('name').value,
+            password: document.getElementById('password').value
+        };
+
+        // Отправляем данные формы в формате JSON
+        fetch('/api/v1/own/kolybPanelka/registerNewSubmit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = '../';
+            } else {
+                alert('такой логин уже есть');
+            }
+        })
+    });
+</script>
+</body>
+</html>
