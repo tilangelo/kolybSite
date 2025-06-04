@@ -1,10 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Admin Panel</title>
 </head>
 <body>
 <h1>ADMINKA</h1>
+
+<h1>Добавление новости</h1>
+<form th:action="@{/api/v1/own/kolybPanelka/newNews}" method="post" enctype="multipart/form-data">
+    <label>Заголовок:</label><br>
+    <input type="text" name="title"><br><br>
+
+    <label>Описание:</label><br>
+    <textarea name="content"></textarea><br><br>
+
+    <label>Картинка:</label><br>
+    <input type="file" name="imageFile"><br><br>
+
+    <button type="submit">Добавить</button>
+</form>
+
+<h1>Добавление проекта</h1>
+<form th:action="@{/api/v1/own/kolybPanelka/newProject}" method="post" enctype="multipart/form-data">
+    <label>Заголовок:</label><br>
+    <input type="text" name="title"><br><br>
+
+    <label>Описание:</label><br>
+    <textarea name="content"></textarea><br><br>
+
+    <label>Картинка:</label><br>
+    <input type="file" name="imageFile"><br><br>
+
+    <button type="submit">Добавить</button>
+</form>
+
 </body>
 </html>

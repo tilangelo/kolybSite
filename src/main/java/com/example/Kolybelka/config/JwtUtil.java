@@ -18,7 +18,7 @@ public class JwtUtil {
     private static Dotenv dotenv = Dotenv.load();
 
     private final String jwtSecret = dotenv.get("JWT_KEY"); //в .env
-    private final long jwtExpirationMs = 1800000; // 30 мин
+    private final long jwtExpirationMs = 3600000; // 30 мин
     SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
     public String generateToken(UserDetails userDetails) {

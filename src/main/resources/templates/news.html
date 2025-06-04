@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Новости</title>
 </head>
 <body>
-
+<h1>Новости</h1>
+<div th:each="news : ${newsList}">
+    <h2 th:text="${news.title}"></h2>
+    <img th:src="${news.imageUrl}" alt="news image" style="max-width: 300px;">
+    <p th:text="${news.content}"></p>
+    <hr>
+</div>
 </body>
 </html>

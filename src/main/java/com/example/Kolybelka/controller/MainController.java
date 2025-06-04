@@ -1,22 +1,23 @@
 package com.example.Kolybelka.controller;
 
-import com.example.Kolybelka.DTO.DonationRequest;
-import com.example.Kolybelka.DTO.HelpRequest;
-import com.example.Kolybelka.DTO.LoginResponse;
-import com.example.Kolybelka.DTO.PaymentResponse;
+import com.example.Kolybelka.DTO.*;
 import com.example.Kolybelka.model.Admin;
-import com.example.Kolybelka.service.HelpService;
-import com.example.Kolybelka.service.PaymentService;
-import com.example.Kolybelka.service.UserService;
+import com.example.Kolybelka.service.*;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,10 +33,26 @@ public class MainController {
 
     private final UserService userService;
 
-    public MainController(PaymentService paymentService, HelpService helpService, UserService userService) {
+    private final NewsService newsService;
+
+    private final ProjectService projectService;
+
+    private final ResourceLoader resourceLoader;
+
+/*    @Value("${upload.path}")
+    private String uploadPath;*/
+
+    public MainController(PaymentService paymentService,
+                          HelpService helpService,
+                          UserService userService,
+                          NewsService newsService,
+                          ProjectService projectService, ResourceLoader resourceLoader) {
         this.paymentService = paymentService;
         this.helpService = helpService;
         this.userService = userService;
+        this.newsService = newsService;
+        this.projectService = projectService;
+        this.resourceLoader = resourceLoader;
     }
 
     @PostMapping("/mock-yookassa")
@@ -55,6 +72,7 @@ public class MainController {
         return ResponseEntity.ok(new PaymentResponse(paymentUrl));
     }
 
+    //TODO: Редирект на фронте с формы логина на админку после логина
     @PostMapping("/api/v1/own/kolybPanelka/loginPanelSubmit")
     @ResponseBody
     public ResponseEntity<LoginResponse> panelLogin(@RequestBody @Valid Admin admin, HttpServletResponse response) throws Exception {
@@ -85,7 +103,8 @@ public class MainController {
     }
 
 
-    //Доделать логику существующего логина (false response)
+    //TODO: Доделать логику существующего логина (false response)
+    //TODO: Редирект с формы регистрации в админку
     @PostMapping("/api/v1/own/kolybPanelka/registerNewSubmit")
     @ResponseBody
     public ResponseEntity<?> registerNewSubmit(@RequestBody @Valid Admin admin) {
@@ -103,9 +122,13 @@ public class MainController {
     }
 
     @PostMapping("/api/v1/help-request")
-    public ResponseEntity<PaymentResponse> createHelpRequest(@RequestBody @Valid HelpRequest helpRequest) {
-        helpService.createHelpRequest(helpRequest);
-        return ResponseEntity.ok(new PaymentResponse("https://shikimori.one/"));
+    public ResponseEntity<?> createHelpRequest(@RequestBody @Valid HelpRequest helpRequest) {
+        try {
+            helpService.createHelpRequest(helpRequest);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/donate")
@@ -123,14 +146,79 @@ public class MainController {
         return "infoAboutUs";
     }
 
-    @GetMapping("projects")
-    public String projects(){
+    //Эндпоинты проектов
+    @GetMapping("/projects")
+    public String projects(Model model) {
+        model.addAttribute("projects", projectService.getAllProjects());
         return "projects";
     }
+    @PostMapping("/api/v1/own/kolybPanelka/newProject")
+    public ResponseEntity<?> newProject(@ModelAttribute Project project,
+                                        @RequestParam("imageFile") MultipartFile file) throws IOException {
 
+        try {
+            String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
+
+            // Убедитесь, что папка существует
+            File dir = new File(uploadDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            // Сохраняем файл
+            String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+            String filePath = uploadDir + File.separator + fileName;
+            File dest = new File(filePath);
+            file.transferTo(dest);
+            project.setImageUrl("/uploads/" + fileName);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка загрузки: " + e.getMessage());
+        }
+
+        ResponseEntity response = projectService.saveProject(project);
+        if(response.getStatusCode() == HttpStatus.CREATED) {
+            return ResponseEntity.ok("Файл сохранён");
+        } else {
+            return ResponseEntity.badRequest().body("fail");
+        }
+    }
+
+    //Новостные эндпоинты
     @GetMapping("/news")
-    public String news(){
+    public String news(Model model){
+        model.addAttribute("newsList", newsService.getAllNews());
         return "news";
+    }
+    @PostMapping("/api/v1/own/kolybPanelka/newNews")
+    public ResponseEntity<?> newNews(@ModelAttribute News news,
+                                     @RequestParam("imageFile") MultipartFile file) throws IOException {
+
+        try {
+            // Корневой путь относительно проекта (где pom.xml)
+            String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
+
+            // Убедитесь, что папка существует
+            File dir = new File(uploadDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            // Сохраняем файл
+            String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+            String filePath = uploadDir + File.separator + fileName;
+            File dest = new File(filePath);
+            file.transferTo(dest);
+            news.setImageUrl("/uploads/" + fileName);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка загрузки: " + e.getMessage());
+        }
+
+        ResponseEntity response = newsService.saveNews(news);
+        if(response.getStatusCode() == HttpStatus.CREATED) {
+            return ResponseEntity.ok("Файл сохранен:");
+        } else {
+            return ResponseEntity.badRequest().body("fail");
+        }
     }
 
     @GetMapping("/contacts")

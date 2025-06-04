@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Проекты</title>
 </head>
 <body>
-
+<h1>Проекты</h1>
+<div th:each="project : ${projects}">
+    <h2 th:text="${project.title}"></h2>
+    <img th:src="${project.imageUrl}" alt="project image" style="max-width: 300px;">
+    <p th:text="${project.description}"></p>
+    <hr>
+</div>
 </body>
 </html>
