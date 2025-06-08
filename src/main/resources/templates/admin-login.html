@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход в админку</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f2f2f2;
+        }
+        .login-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="login-form">
+    <h2>Вход в админку</h2>
+    <form id="loginForm">
+        <label for="username">Логин:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Войти</button>
+        <div class="error-message" id="errorMessage"></div>
+    </form>
+</div>
+
+<script>
+  document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const errorMessage = document.getElementById("errorMessage");
+    errorMessage.textContent = "";
+
+    fetch('/api/v1/own/kolybPanelka/loginPanel', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    })
+    .then(response => {
+      if (response.ok) {
+        window.location.href = '/api/v1/own/kolybPanelka';
+      } else if (response.status === 401) {
+        errorMessage.textContent = "Неверный логин или пароль.";
+      } else if (response.status === 500) {
+        errorMessage.textContent = "Ошибка сервера. Проверьте подключение к базе данных.";
+      } else {
+        return response.text().then(text => { throw new Error(text); });
+      }
+    })
+    .catch(error => {
+      if (!navigator.onLine) {
+        errorMessage.textContent = "Нет подключения к интернету.";
+      } else {
+        errorMessage.textContent = "Произошла неизвестная ошибка: " + error.message;
+      }
+    });
+  });
+</script>
+</body>
+</html>

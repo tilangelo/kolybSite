@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ-панель</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            margin-bottom: 30px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        input, textarea, select, button {
+            display: block;
+            width: 100%;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+<h1>Админ-панель</h1>
+
+<section>
+    <h2>Добавить новость</h2>
+    <form th:action="@{/api/v1/own/kolybPanelka/newNews}" method="post" enctype="multipart/form-data">
+        <label>Заголовок:</label>
+        <input type="text" name="title" required>
+
+        <label>Описание:</label>
+        <textarea name="content" required></textarea>
+
+        <label>Тип новости:</label>
+        <select name="category" required>
+            <option value="news">Новости</option>
+            <option value="events">Мероприятия</option>
+            <option value="support">Поддержка</option>
+        </select>
+
+        <label>Картинка:</label>
+        <input type="file" name="imageFile" required>
+
+        <button type="submit">Добавить</button>
+    </form>
+</section>
+
+<section>
+    <h2>Добавить нового администратора</h2>
+    <form id="registerAdminForm">
+        <label>Имя нового администратора:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label>Пароль:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Добавить</button>
+    </form>
+</section>
+
+<script>
+  document.getElementById("registerAdminForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    fetch('/api/v1/own/kolybPanelka/registerNewSubmit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username, password })
+    })
+    .then(response => {
+      if (response.ok) {
+        window.location.href = '/api/v1/own/kolybPanelka';
+      } else {
+        return response.text().then(text => { throw new Error(text); });
+      }
+    })
+    .catch(error => {
+      alert("Ошибка: " + error.message);
+    });
+  });
+</script>
+
+</body>
+</html>
